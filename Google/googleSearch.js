@@ -11,6 +11,7 @@ async function scraping(page, position, tag, LenOption) {
   while (content.length < LenOption) {
     lenElements += 10;
     // console.log("position is : " + lenElements);
+
     await page.goto(
       `https://www.google.com/search?q=${tag}&start=${lenElements}`
     );
@@ -22,11 +23,10 @@ async function scraping(page, position, tag, LenOption) {
       //   https://www.google.com/search?q=access&start=20
       total.forEach((element) => {
         let object = {};
-        object.title = element.querySelector("h3").innerText;
-        object.site = element.querySelector("cite").innerText;
+        object.title = element.querySelector("h3").innerText.split(" -")[0];
+        object.site = element.querySelector("cite").innerText.split(" ›")[0];
         objectCollection.push(object);
       });
-
       total = document.querySelectorAll('div[data-content-feature="1"]');
       total.forEach(
         (element, index) =>

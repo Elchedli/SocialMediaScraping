@@ -49,6 +49,7 @@ const fs = require("fs");
       total.forEach((element) => {
         let object = {};
         element = element.parentNode;
+        object.url = element.querySelector("a").href;
         object.Image = element.firstChild.querySelector("img").src;
         object.description = [...element.lastChild.querySelectorAll("span")]
           .map((elem) => elem.innerText)
@@ -63,7 +64,7 @@ const fs = require("fs");
     content = content.slice(0, process.argv[4]);
     console.log(content);
     console.log("total is : " + content.length);
-    await browser.close();
+    // await browser.close();
   } catch (e) {
     console.log("erreur est : " + e);
   }

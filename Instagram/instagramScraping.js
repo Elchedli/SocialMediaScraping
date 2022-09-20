@@ -1,3 +1,4 @@
+// user.json tag numberofelements
 const puppeteer = require("puppeteer");
 const fs = require("fs");
 const uuid = require("uuid");
@@ -51,13 +52,19 @@ function delay(time) {
       let content = await page.evaluate((id) => {
         // let total = document.querySelector("article").querySelectorAll("a");
         let singlePost = {};
-        singlePost.id = id;
+
         let element = document.querySelector("div[role='dialog']");
         singlePost.Image = element.querySelector("img").src || "video";
         let contentExist = element.querySelectorAll(
           "li[role='menuitem'] span"
         )[1];
         singlePost.url = window.location.href;
+        singlePost.Author = element.querySelectorAll("a")[1].innerText;
+        singlePost.Date = element.querySelector("time").title;
+        let totalviews = element
+          .querySelectorAll('div[role="presentation"] section')[1]
+          .innerText.split(" ");
+        singlePost.Views = totalviews.length > 2 ? "" : totalviews[0];
         singlePost.Description = contentExist ? contentExist.innerText : "";
         if (singlePost.Description != "") {
           if (singlePost.Description.contains("#")) {
@@ -70,20 +77,7 @@ function delay(time) {
         } else {
           singlePost.Tags = "";
         }
-        // if (singlePost.Description != "") {
-        //     singlePost.Description.forEach((element, index, array) => {
-        //         if (element.contains('#')) {
-        //             let total = element.replaceAll(" ", "");
-        //             total = element.replace("\n", "")
-        //             total = total.split("#");
-        //             if (total[0] == "") array.splice(index, 1)
-        //             else array[index] = total[0]
-        //             total.shift()
-        //             singlePost.Tags = singlePost.Tags.concat(total);
-        //         }
-        //     });
-        // }
-        // singlePost.Tags = singlePost.Description.split("\n")[-1];
+        singlePost.id = id;
         return singlePost;
       }, id);
       addedPost.push(content);

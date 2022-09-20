@@ -32,6 +32,7 @@ async function scraping(page, position, tag, LenOption, user) {
     total.forEach((element) => {
       let object = {};
       element = element.parentNode;
+      object.url = element.querySelector("a").href;
       object.Image = element.firstChild.querySelector("img").src;
       object.description = [...element.lastChild.querySelectorAll("span")]
         .map((elem) => elem.innerText)

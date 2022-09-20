@@ -1,5 +1,6 @@
 // tag numberofelements
 const puppeteer = require("puppeteer");
+const uuid = require("uuid");
 (async function main() {
   try {
     const browser = await puppeteer.launch({
@@ -32,10 +33,18 @@ const puppeteer = require("puppeteer");
       let total = document.querySelectorAll("#contents > ytd-video-renderer");
       total.forEach((element) => {
         let singleVideo = {};
+        let viewsxtime = element
+          .querySelector("#metadata-line")
+          .innerText.split("\n");
+
+        singleVideo.url = element.querySelector("a").href;
         singleVideo.Image = element.querySelector("img").src;
+
         let elementText = element.querySelectorAll("yt-formatted-string");
         singleVideo.Title = elementText[0].innerText;
         singleVideo.ChannelName = elementText[2].innerText;
+        singleVideo.Views = viewsxtime[0];
+        singleVideo.Date = viewsxtime[1];
         singleVideo.Description = elementText[4]
           ? elementText[4].innerText
           : elementText[3].innerText;
@@ -45,6 +54,7 @@ const puppeteer = require("puppeteer");
       return addedVideos;
     });
     content = content.slice(0, LenOption);
+    content.map((element) => (element.id = uuid.v4()));
     console.log(content);
     console.log("total est : " + content.length);
     // style-scope

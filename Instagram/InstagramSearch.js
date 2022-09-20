@@ -1,4 +1,4 @@
-// username.json tag numberofelements latest/id save
+// user.json tag numberofelements latest/id save
 const puppeteer = require("puppeteer");
 const fs = require("fs");
 const uuid = require("uuid");
